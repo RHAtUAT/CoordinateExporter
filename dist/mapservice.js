@@ -28,11 +28,13 @@ class MapService {
         let lng = longitude.toFixed(4);
         let lat = latitude.toFixed(4);
         var ul = document.getElementById('point-list');
-        var newItems = `<li ><input class='color-picker'><label class='list-item'>(${lng}, ${lat})</label><br><button class='export'>Export</button><button class='delete'>Delete</button></li>`;
+        var newItems = `<li id=${id}><input class='color-picker'><label class='list-item'>(${lng}, ${lat})</label><br><button class='export'>Export</button><button class='delete'>Delete</button></li>`;
         ul.insertAdjacentHTML('beforeend', newItems);
         // $( "<input class='color-picker'><label class='list-item'>(-111.2231, 33.123)</label><br><button class='export'>Export</button><button class='delete'>Delete</button></li>" ).appendTo(".point-list");
     }
-    removeListElement() {
+    static removeListElement(id) {
+        var listElement = document.getElementById(id);
+        listElement.replaceWith('');
     }
     static buildColorPicker(id, color) {
         var pickers = document.getElementsByClassName('color-picker');
@@ -76,8 +78,8 @@ class MapService {
                         hsva: false,
                         cmyk: false,
                         input: true,
-                        clear: true,
-                        save: true
+                        clear: false,
+                        save: false
                     }
                 }
             });

@@ -44,7 +44,6 @@ map.on('load', function () {
         filter: ['in', '$type', 'Point']
     });
     geojson.features.forEach(element => {
-        console.log(`point.properties.id ${element.properties.id}`);
         // Add a list element for each point on the map
         mapservice_1.MapService.newListElement(element.properties.id, element.geometry.coordinates[0], element.geometry.coordinates[1]);
         //Replace the default color picker window with the custom one
@@ -59,6 +58,7 @@ map.on('load', function () {
         // If a feature(point) was clicked, remove it from the map
         if (features.length) {
             var id = features[0].properties.id;
+            mapservice_1.MapService.removeListElement(id);
             geojson.features = geojson.features.filter(function (point) {
                 return point.properties.id !== id;
             });
@@ -85,7 +85,7 @@ map.on('load', function () {
                     "color": "#" + randomColor() + randomColor() + randomColor()
                 }
             };
-            console.log(`point.properties.id${point.properties.id}`);
+            //console.log(`point.properties.id${point.properties.id}`);
             mapservice_1.MapService.newListElement(point.properties.id, point.geometry.coordinates[0], point.geometry.coordinates[1]);
             mapservice_1.MapService.buildColorPicker(point.properties.id, point.properties.color);
             geojson.features.push(point);
