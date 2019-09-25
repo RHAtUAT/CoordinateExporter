@@ -1,8 +1,8 @@
 ///<reference path="globals.d.ts" />
 import { MapService } from './mapservice';
-import { GeoJson, FeatureCollection } from './featureCollection';
 import mapboxgl from 'mapbox-gl';
 
+// Creates the map
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2lzdGFqc29kdG5vZmFzZGYiLCJhIjoiY2swZDQzb3gwMDJ2bzNjcXg0Yms3ajkxciJ9.IlQsvqC_5gRUyyjPLjAj0g';
 (global as any).map = new mapboxgl.Map({
     container: 'map', // container id
@@ -10,6 +10,12 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoic2lzdGFqc29kdG5vZmFzZGYiLCJhIjoiY2swZDQzb3gwM
     center: [-111.97588, 33.37751], // starting position
     zoom: 9 // starting zoom
 });
+
+/**
+ *  Nothing below this does anything right now. It was originally a reference for a similar written with angular,
+ *  Just keeping it around because I might organize point.ts in a similar way
+ * */ 
+
 
 
 export class MapBox {
@@ -60,7 +66,7 @@ export class MapBox {
         //// Add Point on Click
         this.map.on('click', (event) => {
             const coordinates: [number, number] = [event.lngLat.lng, event.lngLat.lat]
-            const newPoint = new GeoJson(coordinates, { message: this.message })
+            //const newPoint = new GeoJson(coordinates, { message: this.message })
             //this.mapService.createPoint(newPoint)
         })
         
@@ -68,28 +74,14 @@ export class MapBox {
         /// Add realtime firebase data on map load
         this.map.on('load', (event) => {
             
-            console.log('MapBox');
-            //this.ngOnInit();
-            /// register source
-            this.map.addSource('point', {
-                type: 'geojson',
-                data: {
-                    type: 'FeatureCollection',
-                    features: []
-                }
-            });
-            
-            /// get source
-            this.source = this.map.getSource('point')
-            
             /// subscribe to realtime database and set data source
             //var subscribe = new Promise(function(resolve, reject){
                 //let data = new FeatureCollection(points)
                 //  resolve(data)
                 //})
             //this.points.subscribe(points => {
-                let data = new FeatureCollection(this.points)
-                this.source.setData(data);
+                //let data = new FeatureCollection(this.points)
+                //this.source.setData(data);
                 //})
                 
                 /// create map layers with realtime data
@@ -116,17 +108,15 @@ export class MapBox {
     }
     
     
-    /// Helpers
-    
     removeMarker(point: string) {
         // this.mapService.removePoint(point.$key)
     }
     
-    flyTo(data: GeoJson) {
-        this.map.flyTo({
-            center: data.geometry.coordinates
-        })
-    }
+    // flyTo(data: GeoJSON) {
+    //     this.map.flyTo({
+    //         center: data.geometry.coordinates
+    //     })
+    // }
 }
 var mapbox = new MapBox(new MapService());
 //mapbox.OnInit();
