@@ -11,7 +11,7 @@ function createWindow(fileName) {
             nodeIntegration: true
         }
     });
-    //load the stylization for the app
+    // Load the stylization for the app
     win.loadURL(url.format({
         pathname: fileName,
         protocol: 'file:',
