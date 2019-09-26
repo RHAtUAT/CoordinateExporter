@@ -15,14 +15,21 @@ document.getElementById('points').addEventListener('click', function () {
 // Open the Side Navigation bar
 document.getElementById('side-nav-btn').addEventListener('click', clickNavBtn);
 
+// Remove the point
+// document.getElementById('delete-btn').addEventListener('click', removePoint);
 
+// function removePoint(){
+
+// }
+
+// Toggle the switch
 function showCoordinates() {
     var input = <HTMLInputElement>document.getElementById('coordinate-switch');
     if (input.checked == true) document.getElementById('coordinates').style.display = 'block';
     else document.getElementById('coordinates').style.display = 'none';
 }
 
-//For opening the options tab
+//For opening the side bar
 function clickNavBtn() {
 
     if (document.getElementById('sideNav').style.width == '30%' &&
