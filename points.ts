@@ -1,6 +1,8 @@
 import { Layer } from "mapbox-gl";
 import { MapService } from './mapservice';
 import { Feature, FeatureCollection } from "geojson";
+const request = require('snekfetch');
+const https = require('https');
 
 /**
  * ////////////////////////////////////////////////////////////////////////////
@@ -96,10 +98,11 @@ map.on('load', function () {
             return element.id;
         });
     }
-
+    
+    function getData() {
+    }
 
     map.on('click', function (e) {
-
         // Get the layer(point) with an id in the layerIds array where the mouse just clicked 
         var features = map.queryRenderedFeatures(e.point, { layers: layerIds });
         var point: Feature;
@@ -144,7 +147,8 @@ map.on('load', function () {
                 },
                 "properties": {
                     "id": 'PointID-' + String(new Date().getTime()),
-                    "color": "#" + randomColor() + randomColor() + randomColor()
+                    "color": "#" + randomColor() + randomColor() + randomColor(),
+                    "temp": 0
                 }
             };
             geojson.features.push(point);

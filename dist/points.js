@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mapservice_1 = require("./mapservice");
+const request = require('snekfetch');
+const https = require('https');
 /**
  * ////////////////////////////////////////////////////////////////////////////
  * ///                                NOTE                                  ///
@@ -29,6 +31,7 @@ const mapservice_1 = require("./mapservice");
  */
 let layers;
 let layerIds;
+let temp = '';
 map.on('load', function () {
     // Get the points from the save file
     let geojson = mapservice_1.MapService.readPoints();
@@ -79,7 +82,30 @@ map.on('load', function () {
             return element.id;
         });
     }
-    map.on('click', function (e) {
+    function getData(e) {
+        // grabs the lat and long of point clicked
+        var lat = e.lngLat.lat;
+        var lon = e.lngLat.lng;
+        let apiLink = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=6a267a38043e6b6bcd7d776c5733c62d';
+        console.log(apiLink);
+        // sends get request to apiLink & waits for return
+        https.get(apiLink, (res) => {
+            let data = '';
+
+            res.on('data', (d) => {
+                data += d;
+            });
+
+            res.on('end', () => {
+                // converts temp in K to F
+                temp = Math.floor(1.8 * ((JSON.parse(data).main.temp) - 273) + 32);
+                addPoint(e);
+            });
+        }).on('error', (e) => {
+            console.error(e);
+        });
+    }
+    function addPoint(e) {
         // Get the layer(point) with an id in the layerIds array where the mouse just clicked 
         var features = map.queryRenderedFeatures(e.point, { layers: layerIds });
         var point;
@@ -120,7 +146,8 @@ map.on('load', function () {
                 },
                 "properties": {
                     "id": 'PointID-' + String(new Date().getTime()),
-                    "color": "#" + randomColor() + randomColor() + randomColor()
+                    "color": "#" + randomColor() + randomColor() + randomColor(),
+                    "temp": temp
                 }
             };
             geojson.features.push(point);
@@ -148,5 +175,8 @@ map.on('load', function () {
         }
         // Save the data
         mapservice_1.MapService.writePoints(geojson);
+    }
+    map.on('click', function (e) {
+        getData(e);
     });
 });
