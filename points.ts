@@ -1,7 +1,10 @@
-import { Layer } from "mapbox-gl";
+import { Layer, EventData } from "mapbox-gl";
 import { MapService } from './mapservice';
 import { Feature, FeatureCollection } from "geojson";
-
+import { Points } from "./geojson";
+import $ from 'jquery';
+import https from 'https';
+import { resolve } from "path";
 /**
  * ////////////////////////////////////////////////////////////////////////////
  * ///                                NOTE                                  ///
@@ -13,12 +16,12 @@ import { Feature, FeatureCollection } from "geojson";
  ******************************************************************************
  */
 
- 
+
 /**
  * If you accidently delete the point-data.json file while working on it
  * or for testing, or what ever, here's the default object data that needs
  * to be in it to not cause an error, there's no error handling to auto 
- * fill this into the file yet, so the geojson object that loads the points 
+ * fill this into the file yet, so the Points.geojson object that loads the points 
  * will be undefined if the file is blank
  * 
  * 
@@ -32,80 +35,56 @@ import { Feature, FeatureCollection } from "geojson";
  */
 
 
-let layers: Layer[];
-let layerIds: string[];
+
 map.on('load', function () {
-
-    // Get the points from the save file
-    let geojson: FeatureCollection = MapService.readPoints();
-
-    // Error handling for reading from the file
-    if (!('features' in geojson)) console.log('Starting from blank save file.');
-    else if (!geojson.features.length) console.log('No points were saved.');
-    else console.log('Loaded %d points.', geojson.features.length);
-
     
-    // Make a new source and layer for each point
-    geojson.features.forEach(element => {
-        
-        if (element.properties.id != undefined) {
-            
-            map.addSource(element.properties.id, {
-                type: "geojson",
-                data: element
-            });
-
-            // Add points to the map
-            map.addLayer({
-                id: element.properties.id,
-                type: 'circle',
-                source: element.properties.id,
-                paint: {
-                    'circle-radius': 5,
-                    'circle-color': ['get', 'color']
-                },
-                filter: ['in', '$type', 'Point']
-            });
-
-            layers = map.getStyle().layers.filter(function (layers) {
-                return layers.id.includes('PointID-');
-            });
-
-            layerIds = layers.map(element => {
-                return element.id;
-            });
-
-            // Add a list element for each point on the map
-            MapService.newListElement(element.properties.id, element.geometry.coordinates[0], element.geometry.coordinates[1]);
-
-            //Replace the default color picker window with the custom one
-            MapService.buildColorPicker(element, element.properties.color, geojson);
-        }
+    let temp = '';
+    let styles: JQuery<string>;
+    styles = $("#map-types :input").map(function () {
+        console.log("Styles: " + this.id);
+        return this.id;
     });
 
+    Points.getSavedPoints();
+    Points.displaySavedPoints();
 
-    function updateLayerArrays(){
+    function getTemperature(e: EventData) : Promise<string> {
 
-        // Get all the layers and return an array of the ones the user creates  
-        layers = map.getStyle().layers.filter(function (layers) {
-            return layers.id.includes('PointID-');
-        });
-        
-        // Create an array of layer ids
-        layerIds = layers.map(element => {
-            return element.id;
-        });
+        return new Promise(async (resolve, reject) => {
+            // Grabs the lat and long of point clicked
+            let lat = e.lngLat.lat;
+            let lon = e.lngLat.lng;
+            let url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=6a267a38043e6b6bcd7d776c5733c62d';
+            console.log(url);
+            
+            // Sends get request to url & waits for return
+            https.get(url, (res) => {
+                let data = '';
+                
+                res.on('data', (d) => {
+                    data += d;
+                });
+                
+                res.on('end', () => {
+                    // Converts temp in K to F
+                    temp = Math.floor((1.8 * (JSON.parse(data).main.temp - 273) + 32)).toString();
+                    console.log(temp);
+                    return resolve(temp);
+                });
+            }).on('error', (e) => {
+                console.error(e);
+                return reject(new Error('Error occurred'))
+            });
+        })
     }
 
-
-    map.on('click', function (e) {
-
+    async function pointManager(e: EventData) {
         // Get the layer(point) with an id in the layerIds array where the mouse just clicked 
-        var features = map.queryRenderedFeatures(e.point, { layers: layerIds });
-        var point: Feature;
+        let features = map.queryRenderedFeatures(e.point, { layers: MapService.layerIds });
+        let point: Feature;
 
         // Allow a max of 100 points 
-        if (geojson.features.length > 100) geojson.features.pop();
+        if (Points.geojson.features.length > 100) Points.geojson.features.pop();
 
         // If a feature(point) was clicked, remove it from the map
         if (features.length) {
@@ -119,15 +98,16 @@ map.on('load', function () {
             map.removeSource(features[0].properties.id);
 
             // Return an array of all points except the one we clicked
-            geojson.features = geojson.features.filter(function (point) {
+            Points.geojson.features = Points.geojson.features.filter(function (point) {
                 return point.properties.id !== id;
             });
-            updateLayerArrays();
+            MapService.updateLayerArrays();
         }
         // Click on the map to create a new point
         else {
 
             // Create a random color for each new point
+        
             let randomColor = () => {
                 let code = (Math.floor(Math.random() * 256).toString(16));
                 if (code.length < 2) code = '0' + code;
@@ -143,11 +123,12 @@ map.on('load', function () {
                     ]
                 },
                 "properties": {
-                    "id": 'PointID-' + String(new Date().getTime()),
-                    "color": "#" + randomColor() + randomColor() + randomColor()
+                    "id": 'PointID-' + new Date().getTime(),
+                    "color": "#" + randomColor() + randomColor() + randomColor(),
+                    "temp": await getTemperature(e)
                 }
             };
-            geojson.features.push(point);
+            Points.geojson.features.push(point);
 
             // Add a new source
             map.addSource(point.properties.id, {
@@ -161,21 +142,26 @@ map.on('load', function () {
                 type: 'circle',
                 source: point.properties.id,
                 paint: {
-                    'circle-radius': 5,
+                    'circle-radius': 7,
                     'circle-color': ['get', 'color']
                 },
                 filter: ['in', '$type', 'Point']
             });
 
-            updateLayerArrays();
-            
+            MapService.updateLayerArrays();
+
             // Create new list element using loaded points
             MapService.newListElement(point.properties.id, point.geometry.coordinates[0], point.geometry.coordinates[1]);
-            
+
             // Style the input field with the custom color picker after the element has been created
-            MapService.buildColorPicker(point, point.properties.color, geojson);
+            MapService.buildColorPicker(point, point.properties.color, Points.geojson);
         }
         // Save the data
-        MapService.writePoints(geojson);
+        MapService.writePoints(Points.geojson);
+    }
+
+    map.on('click', function (e) {
+        pointManager(e);
+
     });
 });

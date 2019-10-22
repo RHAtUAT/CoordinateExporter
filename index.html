@@ -6,7 +6,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <script>exports = {};</script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
-    <link rel="stylesheet" href="./node_modules/@simonwep/pickr/dist/themes/nano.min.css"/> 
+    <link rel="stylesheet" href="./css/colorpicker/nano.min.css"/> 
     <link href='./css/style.css' rel='stylesheet' type='text/css' />
     <title>Map</title>
 </head>
@@ -62,7 +62,9 @@
         <button id='points' class='nav-item'>Points</button>
         <!--The menu to pop up when you click points-->
         <div id='points-tab' class='nav-dropdown'>
-            <ul id='point-list' class='point-list'></ul>
+            <ul id='point-list' class='point-list'>
+                <label id='initialText'>Click on the map to add a point</label>
+            </ul>
         </div>
     </div>
 
@@ -71,13 +73,12 @@
         <span>&#9776;</span>
     </div>
 
-
-
 </body>
 
 <script>require('./dist/mapbox.js');</script>
+<script>require('./dist/options.js');</script>
 <script>require('./dist/points.js');</script>
-<script>require('./dist/changeStyle.js');</script>
+<!--<script>require('./dist/serialcom.js');</script>-->
 <script>require('./dist/eventListeners.js');</script>
 
 

@@ -61,7 +61,7 @@ body {
   background: rgba(0,0,0,0.5);
   color: #fff;
   position: absolute;
-  bottom: 40px;
+  bottom: 10px;
   left: 10px;
   width: 30%;
   padding: 20px;
@@ -70,6 +70,7 @@ body {
   line-height: 18px;
   border-radius: 3px;
   display: none;
+  transition: 0.5s;
   }
 
 #map-types {

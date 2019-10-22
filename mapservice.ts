@@ -1,9 +1,35 @@
 import fs from 'fs';
 import path from 'path';
 import { FeatureCollection, Feature } from 'geojson';
+import { Layer } from 'mapbox-gl';
+import { Points } from './geojson';
 const Pickr = require('@simonwep/pickr');
 
 export class MapService {
+    
+    public static layerIds : string[];
+    public static updateLayerArrays(){
+        
+        // Create an array of layer ids
+        MapService.layerIds = MapService.getPointLayers().map(element => {
+            return element.id;
+        });
+    }
+    
+    public static getPointLayers(){
+        // Get all the layers and return an array of the ones the user creates  
+        let layers : Layer[];
+        layers = map.getStyle().layers.filter(function (layers) {
+            return layers.id.includes('PointID-');
+        });
+        return layers;
+    }
+
+    public static getPointSources(){
+        let sources = map.getStyle().sources;
+        console.log("sources: " + sources);
+        return sources;
+    }
 
     private static getSaveFile() {
         return path.join(__dirname, '../point-data.json');
@@ -28,19 +54,45 @@ export class MapService {
 
     // Inserts html into the 'ul' element to display the point's information
     public static newListElement(id: string ,longitude: number, latitude: number) {
+        
+        let initialText : HTMLElement | null = document.getElementById('initialText');
+        if(initialText != null){initialText.replaceWith('');}
+
+        // Inserts the HTML code for adding a new list element
+        let ul = document.getElementById('point-list');
         let lng = longitude.toFixed(4);
         let lat = latitude.toFixed(4);
-        // Inserts the HTML code for adding a new list element
-        var ul = document.getElementById('point-list');
-        var newItems = `<li id=${id}><input class='color-picker'><label class='list-item'>(${lng}, ${lat})</label><br><button class='export'>Export</button><button id='delete-btn' class='delete'>Delete</button></li>`;
+        let newItems = `<li id=${id}><input class='color-picker'><label class='list-item'>(${lng}, ${lat})</label><br><button class='export'>Export</button><button id=Delete-Button-${id} class='delete'>Delete</button></li>`;
         ul.insertAdjacentHTML('beforeend', newItems);
-
+        document.getElementById(`Delete-Button-${id}`).addEventListener('click', function () {
+            MapService.removePoint(id)            
+        })
     }
 
     // Remove the list element. This is called when the point is removed
     public static removeListElement(id : string) {
-        var listElement = document.getElementById(id);
+        let listElement = document.getElementById(id);
         listElement.replaceWith('');
+    }
+
+    public static removePoint(id: string) {
+
+        console.log("RemovePoint");
+        // Remove the point from the list in the side bar
+        MapService.removeListElement(id);
+
+        //Remove the layer from the map
+        map.removeLayer(id);
+        map.removeSource(id);
+
+        // Return an array of all points except the one we clicked
+        Points.geojson.features = Points.geojson.features.filter(function (element : Feature) {
+            return element.properties.id !== id;
+        });
+
+        MapService.updateLayerArrays();
+        // Save the data
+        MapService.writePoints(Points.geojson);
     }
 
     // Replace the default windows color picker

@@ -1,4 +1,3 @@
-
 // Open the options tab
 document.getElementById('options-btn').addEventListener('click', function () {
     clickItem('options-tab');
@@ -15,31 +14,26 @@ document.getElementById('points').addEventListener('click', function () {
 // Open the Side Navigation bar
 document.getElementById('side-nav-btn').addEventListener('click', clickNavBtn);
 
-// Remove the point
-// document.getElementById('delete-btn').addEventListener('click', removePoint);
-
-// function removePoint(){
-
-// }
-
 // Toggle the switch
 function showCoordinates() {
-    var input = <HTMLInputElement>document.getElementById('coordinate-switch');
+    let input = <HTMLInputElement>document.getElementById('coordinate-switch');
     if (input.checked == true) document.getElementById('coordinates').style.display = 'block';
     else document.getElementById('coordinates').style.display = 'none';
 }
 
-//For opening the side bar
+// For opening the side bar
 function clickNavBtn() {
 
     if (document.getElementById('sideNav').style.width == '30%' &&
         document.getElementById('side-nav-btn').style.marginLeft == '30%') {
         document.getElementById('sideNav').style.width = '0';
         document.getElementById('side-nav-btn').style.marginLeft = '0';
+        document.getElementById('coordinates').style.marginLeft = '0';
     }
     else {
         document.getElementById('sideNav').style.width = '30%';
         document.getElementById('side-nav-btn').style.marginLeft = '30%';
+        document.getElementById('coordinates').style.marginLeft = '30%';
     }
 }
 
