@@ -15,6 +15,16 @@
   font-weight: 400;
 }
 
+/* These are variables. Begin variable name with --
+   call with var(--variableName)
+*/
+:root {
+  --side-nav-menu-bg-color: #111111;
+  --text-color: #818181;
+  --list-bg-color: #1E1E1E;
+  --border-color: #3A3A3A;
+}
+
 /* 
 color theme used:
 https://coolors.co/9d9c9e-4e3d42-ffffff-57a773-166088
@@ -129,7 +139,7 @@ body {
   .nav-dropdown {
     overflow: hidden;
     display: none;
-    border: 1px solid #3A3A3A;
+    border: 1px solid var(--border-color);
     color: black;
     font-size: 20px;
     font-family: 'agane';
@@ -143,7 +153,7 @@ body {
     padding: 8px 0px 8px 10px;
     width: 100%;
     border: none;
-    border-bottom: 1px solid #3A3A3A;
+    border-bottom: 1px solid var(--border-color);
     outline: none;
     text-decoration: none;
     font-size: 25px;
@@ -180,7 +190,8 @@ body {
   
   #side-nav-btn {
     position: absolute;
-    background-color: #818181;
+    background-color: var(--list-bg-color);
+    color: var(--text-color);
     transition: .5s;
     padding-top: 0px;
     padding-left: 8px;
@@ -232,7 +243,7 @@ body {
       padding: 4px 0px 4px 5px;
       width: 100%;
       border: #2196F3;
-      border-bottom: 1px solid #3A3A3A;
+      border-bottom: 1px solid var(--border-color);
       outline: none;
       text-decoration: none;
       font-size: 20px;
