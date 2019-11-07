@@ -253,7 +253,11 @@ body {
       font-size: 14px;
       font-family: 'agane';
     }
-    
+
+    button.delete:hover {
+      cursor: pointer;
+    }
+
     button.export {
       background-color: #4CAF50; /* Green */
       border: none;
@@ -264,6 +268,60 @@ body {
       display: inline-block;
       font-size: 14px;
       font-family: 'agane';
+    }
+
+    button.export:hover { 
+      cursor: pointer;
+    }
+
+    .fly {
+      position: absolute;
+      background-color: #818181;
+      border: none;
+      right: 4px;
+      height: 20px;
+      width: 20px;
+      text-decoration: none;
+      display: inline-block;
+      outline: none;
+    }
+    .fly:hover {
+      cursor: pointer;
+    }
+    
+    .flyImage {
+      height: 95%;
+      width: 95%;
+    }
+    
+    .fly:hover {
+      cursor: pointer;
+    }
+
+    .tooltip {
+      display: inline-block;
+      position: relative;
+    }
+    
+    .tooltip .tooltiptext {
+      top: -2px;
+      right: 105%;
+      visibility: hidden;
+      width: 120px;
+      background-color: rgb(15, 15, 15);
+      color: #fff;
+      text-align: center;
+      font-family: 'agane';
+      font-size: 14px;
+      padding: 5px 0;
+        
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
     }
 
     input.dot {
