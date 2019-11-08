@@ -1,4 +1,80 @@
 {
     "type": "FeatureCollection",
-    "features": []
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.46263048747242,
+                    33.560179060575365
+                ]
+            },
+            "properties": {
+                "id": "PointID-1573147191105",
+                "color": "#aaab9f",
+                "temp": "74"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.50230887784126,
+                    36.260952209888146
+                ]
+            },
+            "properties": {
+                "id": "PointID-1573147200079",
+                "color": "#725bcf",
+                "temp": "65"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -105.124829734499,
+                    49.82444352876223
+                ]
+            },
+            "properties": {
+                "id": "PointID-1573147204760",
+                "color": "#ce6ded",
+                "temp": "17"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -117.84929915566394,
+                    41.03728186839007
+                ]
+            },
+            "properties": {
+                "id": "PointID-1573147215043",
+                "color": "#3ed2a9",
+                "temp": "32"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.36224183461921,
+                    44.23748044853713
+                ]
+            },
+            "properties": {
+                "id": "PointID-1573147215873",
+                "color": "#c1e764",
+                "temp": "21"
+            }
+        }
+    ]
 }

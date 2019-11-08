@@ -34,8 +34,26 @@ function clickNavBtn() {
     }
 }
 function clickItem(dropdownId) {
-    if (document.getElementById(dropdownId).style.display == 'none' || document.getElementById(dropdownId).style.display == '')
+    if (document.getElementById(dropdownId).style.display == 'none' || document.getElementById(dropdownId).style.display == '') {
         document.getElementById(dropdownId).style.display = 'block';
-    else
+        if (dropdownId == "options-tab") {
+            document.getElementById("options-btn").style.backgroundColor = "#57a773";
+            document.getElementById("options-btn").style.color = "white";
+        }
+        else if (dropdownId == "points-tab") {
+            document.getElementById("points").style.backgroundColor = "#57a773";
+            document.getElementById("points").style.color = "white";
+        }
+    }
+    else {
         document.getElementById(dropdownId).style.display = 'none';
+        if (dropdownId == "options-tab") {
+            document.getElementById("options-btn").style.backgroundColor = "#6cd4f7";
+            document.getElementById("options-btn").style.color = "#818181";
+        }
+        else if (dropdownId == "points-tab") {
+            document.getElementById("points").style.backgroundColor = "#6cd4f7";
+            document.getElementById("points").style.color = "#818181";
+        }
+    }
 }

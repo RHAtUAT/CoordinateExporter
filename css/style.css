@@ -15,7 +15,21 @@
   font-weight: 400;
 }
 
+/* 
+color theme used:
+https://coolors.co/9d9c9e-4e3d42-ffffff-57a773-166088
+*/
 
+/* used to prevent text from being highlighted */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}
 
 .material-icons {
   position: absolute;
@@ -47,7 +61,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #222
+  background-color: #222;
 }
 
 #map {
@@ -73,11 +87,30 @@ body {
   transition: 0.5s;
   }
 
-#map-types {
-  position: relative;
-  padding: 1px;
-  font-size: 14px; /*14px/16 = .875em is it recommended to use em instead of px for font*/
-  font-family: 'agane';
+  #map-types {
+    position: relative;
+    padding: 1px;
+    margin: 5px 0 20px 10px;
+    font-size: 14px; /*14px/16 = .875em is it recommended to use em instead of px for font*/
+    font-family: 'agane';
+  }
+
+  .side-menu-hr {
+    width: 85%;
+    margin: 0 0 0 15px;
+    opacity: .3;
+  }
+
+  #options-tab #options-title {
+    display: inline-block;
+    font-size: 15px;
+    margin: 20px 0 0px 15px;
+    text-decoration: underline;
+  }
+
+  #initialText {
+    display: inline-block;
+    margin: 15px;
   }
 
   .side-nav-menu {
@@ -87,7 +120,7 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: #6cd4f7;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 0px;
@@ -100,9 +133,9 @@ body {
     color: black;
     font-size: 20px;
     font-family: 'agane';
-    color: #818181;
-    background-color: #1E1E1E;
-    transition: .3s;
+    color: #FFFFFF;
+    background-color: #3b9ebf;
+    transition: 0.3s;
   }
   
   .side-nav-menu .nav-item {
@@ -116,15 +149,16 @@ body {
     font-size: 25px;
     font-family: 'agane';
     color: #818181;
-    background-color: #111111;
+    background-color: #6cd4f7;
     transition: 0.3s;
   }
 
   .side-nav-menu .nav-item:hover {
     color: #f1f1f1;
     cursor: pointer;
-    background-color: #211F1F;
+    background-color: #57a773;
   }
+
   /*
   .side-nav-menu .nav-item:hover::after {
     position: absolute;
@@ -203,8 +237,8 @@ body {
       text-decoration: none;
       font-size: 20px;
       font-family: 'agane';
-      color: #818181;
-      background-color: #1E1E1E;
+      color: #FFFFFF;
+      background-color: #3b9ebf;
       transition: 0.3s;
     }
 
@@ -247,6 +281,7 @@ body {
       display: inline-block;
       width: 40px;
       height: 20px;
+      margin: 20px 15px 20px 15px;
     }
     
     .switch input { 
