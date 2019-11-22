@@ -15,6 +15,16 @@
   font-weight: 400;
 }
 
+/* These are variables. Begin variable name with --
+   call with var(--variableName)
+*/
+:root {
+  --side-nav-menu-bg-color: #111111;
+  --text-color: #818181;
+  --list-bg-color: #1E1E1E;
+  --border-color: #3A3A3A;
+}
+
 /* 
 color theme used:
 https://coolors.co/b7b7b7-d1d1d1-f4f4f4-515151-303030
@@ -144,7 +154,7 @@ body {
   .nav-dropdown {
     overflow: hidden;
     display: none;
-    border: 1px solid #3A3A3A;
+    border: 1px solid var(--border-color);
     color: black;
     font-size: 20px;
     font-family: 'agane';
@@ -158,7 +168,7 @@ body {
     padding: 8px 0px 8px 10px;
     width: 100%;
     border: none;
-    border-bottom: 1px solid #3A3A3A;
+    border-bottom: 1px solid var(--border-color);
     outline: none;
     text-decoration: none;
     font-size: 25px;
@@ -195,7 +205,8 @@ body {
   
   #side-nav-btn {
     position: absolute;
-    background-color: #818181;
+    background-color: var(--list-bg-color);
+    color: var(--text-color);
     transition: .5s;
     padding-top: 0px;
     padding-left: 8px;
@@ -246,8 +257,13 @@ body {
     .point-list li {
       padding: 4px 0px 4px 5px;
       width: 100%;
+<<<<<<< HEAD
       border: #515151;
       border-bottom: 1px solid #3A3A3A;
+=======
+      border: #2196F3;
+      border-bottom: 1px solid var(--border-color);
+>>>>>>> ee4ff99c4edacd98d8536cc88d81cc60228a3eb0
       outline: none;
       text-decoration: none;
       font-size: 20px;
@@ -268,7 +284,11 @@ body {
       font-size: 14px;
       font-family: 'agane';
     }
-    
+
+    button.delete:hover {
+      cursor: pointer;
+    }
+
     button.export {
       background-color: #4CAF50; /* Green */
       border: none;
@@ -279,6 +299,60 @@ body {
       display: inline-block;
       font-size: 14px;
       font-family: 'agane';
+    }
+
+    button.export:hover { 
+      cursor: pointer;
+    }
+
+    .fly {
+      position: absolute;
+      background-color: #818181;
+      border: none;
+      right: 4px;
+      height: 20px;
+      width: 20px;
+      text-decoration: none;
+      display: inline-block;
+      outline: none;
+    }
+    .fly:hover {
+      cursor: pointer;
+    }
+    
+    .flyImage {
+      height: 95%;
+      width: 95%;
+    }
+    
+    .fly:hover {
+      cursor: pointer;
+    }
+
+    .tooltip {
+      display: inline-block;
+      position: relative;
+    }
+    
+    .tooltip .tooltiptext {
+      top: -2px;
+      right: 105%;
+      visibility: hidden;
+      width: 120px;
+      background-color: rgb(15, 15, 15);
+      color: #fff;
+      text-align: center;
+      font-family: 'agane';
+      font-size: 14px;
+      padding: 5px 0;
+        
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
     }
 
     input.dot {

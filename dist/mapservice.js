@@ -55,10 +55,38 @@ class MapService {
         let ul = document.getElementById('point-list');
         let lng = longitude.toFixed(4);
         let lat = latitude.toFixed(4);
-        let newItems = `<li id=${id}><input class='color-picker'><label class='list-item'>(${lng}, ${lat})</label><br><button class='export'>Export</button><button id=Delete-Button-${id} class='delete'>Delete</button></li>`;
-        ul.insertAdjacentHTML('beforeend', newItems);
+        // The elements for the list thats going to be created
+        let colorPicker = `<input class='color-picker'>`;
+        let coordinatesLabel = `<label class='list-item'>(${lng}, ${lat})</label>`;
+        let exportButton = `<button class='export'>Export</button>`;
+        let deleteButton = `<button id=Delete-Button-${id} class='delete'>Delete</button>`;
+        let flyToButton = `
+        <span class='fly'> 
+            <span class='tooltip'>
+                    <img id='fly-to-${id}' class='flyImage' src='/images/send.svg'>    
+                <span class="tooltiptext">Fly to point</span>
+            </span>
+        </span>`;
+        let newItem = `<li id=${id}>
+        ${colorPicker}
+        ${coordinatesLabel}
+        ${flyToButton}
+        <br>
+        ${exportButton}
+        ${deleteButton}
+        </li>`;
+        // Inject the newItem code into the ul element
+        ul.insertAdjacentHTML('beforeend', newItem);
+        MapService.addFlyToListener(id, longitude, latitude);
+        // Clicking delete removes the point and listItem 
         document.getElementById(`Delete-Button-${id}`).addEventListener('click', function () {
             MapService.removePoint(id);
+        });
+    }
+    static addFlyToListener(id, longitude, latitude) {
+        // Clicking on the listItem makes the map fly to the point
+        document.getElementById(`fly-to-${id}`).addEventListener('click', function () {
+            map.flyTo({ center: [longitude, latitude] });
         });
     }
     // Remove the list element. This is called when the point is removed
