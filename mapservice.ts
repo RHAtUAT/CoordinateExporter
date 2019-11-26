@@ -3,6 +3,7 @@ import path from 'path';
 import { FeatureCollection, Feature } from 'geojson';
 import { Layer } from 'mapbox-gl';
 import { Points } from './geojson';
+import { SerialCom } from './serialcom';
 const Pickr = require('@simonwep/pickr');
 
 export class MapService {
@@ -64,7 +65,7 @@ export class MapService {
         // The elements for the list thats going to be created
         let colorPicker = `<input class='color-picker'>`;
         let coordinatesLabel = `<label class='list-item'>(${lng}, ${lat})</label>`;
-        let exportButton = `<button class='export'>Export</button>`;
+        let exportButton = `<button id=Export-Button-${id} class='export'>Export</button>`;
         let deleteButton = `<button id=Delete-Button-${id} class='delete'>Delete</button>`;
         let flyToButton = `
         <span class='fly'> 
@@ -84,10 +85,17 @@ export class MapService {
         // Inject the newItem code into the ul element
         ul.insertAdjacentHTML('beforeend', newItem);
         MapService.addFlyToListener(id, longitude, latitude);
+
         // Clicking delete removes the point and listItem 
         document.getElementById(`Delete-Button-${id}`).addEventListener('click', function () {
             MapService.removePoint(id);  
         });
+
+        // Clicking the export button sends the coordinates to the Arduino 
+        document.getElementById(`Export-Button-${id}`).addEventListener('click', function () {
+            MapService.exportPoint(longitude, latitude);  
+        });
+
     }
 
     private static addFlyToListener(id: string, longitude: number, latitude: number){
@@ -101,6 +109,11 @@ export class MapService {
     public static removeListElement(id : string) {
         let listElement = document.getElementById(id);
         listElement.replaceWith('');
+    }
+
+    public static exportPoint(longitude: number, latitude: number) {
+        SerialCom.writeToArduino(longitude, latitude);
+        
     }
 
     public static removePoint(id: string) {

@@ -29,11 +29,14 @@ function clickNavBtn() {
         document.getElementById('sideNav').style.width = '0';
         document.getElementById('side-nav-btn').style.marginLeft = '0';
         document.getElementById('coordinates').style.marginLeft = '0';
+        document.getElementById('info-label').style.width = '0';
     }
     else {
         document.getElementById('sideNav').style.width = '30%';
         document.getElementById('side-nav-btn').style.marginLeft = '30%';
         document.getElementById('coordinates').style.marginLeft = '30%';
+        document.getElementById('info-label').style.width = '30%';
+
     }
 }
 

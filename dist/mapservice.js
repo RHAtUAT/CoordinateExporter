@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const geojson_1 = require("./geojson");
+const serialcom_1 = require("./serialcom");
 const Pickr = require('@simonwep/pickr');
 class MapService {
     static updateLayerArrays() {
@@ -58,7 +59,7 @@ class MapService {
         // The elements for the list thats going to be created
         let colorPicker = `<input class='color-picker'>`;
         let coordinatesLabel = `<label class='list-item'>(${lng}, ${lat})</label>`;
-        let exportButton = `<button class='export'>Export</button>`;
+        let exportButton = `<button id=Export-Button-${id} class='export'>Export</button>`;
         let deleteButton = `<button id=Delete-Button-${id} class='delete'>Delete</button>`;
         let flyToButton = `
         <span class='fly'> 
@@ -82,6 +83,10 @@ class MapService {
         document.getElementById(`Delete-Button-${id}`).addEventListener('click', function () {
             MapService.removePoint(id);
         });
+        // Clicking the export button sends the coordinates to the Arduino 
+        document.getElementById(`Export-Button-${id}`).addEventListener('click', function () {
+            MapService.exportPoint(longitude, latitude);
+        });
     }
     static addFlyToListener(id, longitude, latitude) {
         // Clicking on the listItem makes the map fly to the point
@@ -93,6 +98,9 @@ class MapService {
     static removeListElement(id) {
         let listElement = document.getElementById(id);
         listElement.replaceWith('');
+    }
+    static exportPoint(longitude, latitude) {
+        serialcom_1.SerialCom.writeToArduino(longitude, latitude);
     }
     static removePoint(id) {
         console.log("RemovePoint");

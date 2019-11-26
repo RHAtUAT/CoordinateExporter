@@ -1,63 +1,149 @@
-import SerialPort from 'serialport';
+import SerialPort, { PortInfo } from 'serialport';
+import $ from 'jquery';
 import { prototype } from 'events';
+import { resolveSoa, resolve } from 'dns';
+import { remote } from 'electron';
+const {dialog} = remote;
 
-//import * as serialport from 'serialport'
+export class SerialCom {
 
-const coords = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0];
+    private static coords = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0];
+    
+    //const COM_PORT = "COM4";    
+    //console.log(SerialPort.list());
+    private static arduinoPort: string;
+    private static connected: boolean;
+    private static arduinoSerialPort: SerialPort;
+    
+    // Finds the port that the arduino is plugged into so that we can open a connection
+    public static getConnectedArduino() {
 
-const COM_PORT = "COM4";
+        setInterval(() => {
 
-console.log(SerialPort.list());
+            if(SerialCom.arduinoPort != null) return;
+            console.log('Searching for arduino...')
 
-var arduinoSerialPort = new SerialPort(COM_PORT, { baudRate: 9600 });
-var parser = arduinoSerialPort.pipe(new SerialPort.parsers.Readline({ delimiter: '\n' }));
+            // Get a list of all the comPorts
+            let comPorts: SerialPort.PortInfo[];
+            SerialPort.list().then(portArray => {
+                
+                comPorts = portArray;
+                //console.log(comPorts);
+                
+                // Check all the ports to see if the arduino is connected
+                comPorts.forEach((port: SerialPort.PortInfo) => {
+                    
+                    if (port.manufacturer.includes('arduino')) {
+                        SerialCom.arduinoPort = port.comName
+                        SerialCom.openPort(SerialCom.arduinoPort);
+                    }
+                });
+                
+            }).catch(console.error);
+        }, 1000)
+    }   
 
-// arduinoSerialPort.open((err) => {
-//     if (err) {
-//         console.log("Error: ", err.message);
-//     }
+    // Create a connection to the port for sending and receiving data
+    private static openPort(COM_PORT : string) {
 
-//     console.log("Opening port...");
-// });
+        if(COM_PORT != null)
 
-arduinoSerialPort.on('open', function () {
-    console.log("Arduino Connected on " + COM_PORT);
-});
+        console.log("Arduino Found on Port: " + COM_PORT);
+        console.log(`Opening Connection on Port...`);
+        // Open communication to port the Arduino is connected to
+        
+        SerialCom.arduinoSerialPort = new SerialPort(COM_PORT, { baudRate: 9600 });
+        let parser = SerialCom.arduinoSerialPort.pipe(new SerialPort.parsers.Readline({ delimiter: '\n' }));
+        
 
-setTimeout( () => {
-    coords.forEach(element => {
-        arduinoSerialPort.write(element + " ", (err) => {
-            if (err) {
-                console.log("Err: ", err.message);
-            }
-
-            console.log("message sent");
+        SerialCom.arduinoSerialPort.open(function () {
+            console.log('Connection Open and Waiting...');
         });
-    })
-    arduinoSerialPort.write('\n');
-}, 4000);
+        
+        
+        // If there's an error let us know
+        SerialCom.arduinoSerialPort.on('error', function (err) {
+            console.log('Error: ', err.message)
+        });
+        
+        //arduinoSerialPort.on('readable', () => { console.log('Data: ', arduinoSerialPort.read(16)); });
+        
+        // When data has been sent
+        //arduinoSerialPort.on('data', (data) => { console.log("Buffer: " + data); });
+        
+        
+        parser.on('data', (data) => {
+            if (data) {
+                console.log("parsing data:", data);
+            }
+            
+            console.log("bytes received");
+        });
 
-// arduinoSerialPort.write("hello, there!", (err) => {
-//     if (err) {
-//         console.log("Error: ", err.message);
-//     }
+        // When the connection has been opened
+        SerialCom.arduinoSerialPort.on('open', () => {
+            this.connected = true;
+            document.getElementById('arduino-info').innerText =`Arduino Connected on Port: ${COM_PORT}`;
+            console.log('Connected');
 
-//     console.log("message sent");
-// })
+        });
 
-arduinoSerialPort.on('error', function (err) {
-    console.log('Error: ', err.message)
-});
-
-arduinoSerialPort.on('readable', () => { console.log('Data: ', arduinoSerialPort.read(16)); });
-
-arduinoSerialPort.on('data', (data) => { console.log(data); });
-
-
-parser.on('data', (data: String) => {
-    if (data) {
-        console.log("data:", data);
+        // When the arduino gets unplugged
+        SerialCom.arduinoSerialPort.on('close', (err)=> {
+            if(err.disconnected === true){
+                
+                this.connected = false;
+                document.getElementById('arduino-info').innerText =`Arduino Disconnected`;
+                console.log("Disconnected");
+                
+                console.log('Searching for arduino...')
+                setInterval(() => {
+                    if(SerialCom.arduinoSerialPort.isOpen) return;
+                    
+                    SerialCom.arduinoSerialPort.open();
+                    //SerialCom.getConnectedArduino();
+                }, 1000)
+            }
+            
+        });
     }
+    
+    public static writeToArduino(longitude: number, latitude: number) {
+        
+        let coords: number[] = [longitude, latitude];
+        console.log(coords);
+        if(!this.connected) {
+            dialog.showErrorBox('No Arduino Connected', 'Please ensure that your Arduino is properly connected before trying to export coordinates.');
+        }
+        else{
+            
+            setTimeout( () => {
+                
+                // The coordinates we're gonna send to the flight computer
+                SerialCom.arduinoSerialPort.write(coords.join(' '), (err) => {
+                    if (err) {
+                        console.log("Err: ", err.message);
+                    }
+                    
+                    console.log("The coordinates: " + coords);
+                    console.log("message sent");
+                });
+                
+                // This is the delimiter, this tells the program to split the message here
+                // This is how the network knows the entire message has been completely sent
+                SerialCom.arduinoSerialPort.write('\n');
+            }, 4000);
 
-    console.log("msg received");
-});
+                        // If there's an error let us know
+                SerialCom.arduinoSerialPort.on('error', function (err) {
+                console.log('Error: ', err.message)
+            });
+        }
+            
+
+    }
+    
+}
+                    
+                    
+                    

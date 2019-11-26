@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mapservice_1 = require("./mapservice");
+const serialcom_1 = require("./serialcom");
 const geojson_1 = require("./geojson");
 const jquery_1 = __importDefault(require("jquery"));
 const https_1 = __importDefault(require("https"));
@@ -51,6 +52,7 @@ map.on('load', function () {
     });
     geojson_1.Points.getSavedPoints();
     geojson_1.Points.displaySavedPoints();
+    serialcom_1.SerialCom.getConnectedArduino();
     function getTemperature(e) {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             // Grabs the lat and long of point clicked

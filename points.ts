@@ -1,10 +1,12 @@
 import { Layer, EventData } from "mapbox-gl";
 import { MapService } from './mapservice';
+import { SerialCom } from './serialcom';
 import { Feature, FeatureCollection } from "geojson";
 import { Points } from "./geojson";
 import $ from 'jquery';
 import https from 'https';
 import { resolve } from "path";
+
 /**
  * ////////////////////////////////////////////////////////////////////////////
  * ///                                NOTE                                  ///
@@ -36,7 +38,7 @@ import { resolve } from "path";
 
 
 
-map.on('load', function () {
+map.on('load',function () {
     
     let temp = '';
     let styles: JQuery<string>;
@@ -47,6 +49,7 @@ map.on('load', function () {
 
     Points.getSavedPoints();
     Points.displaySavedPoints();
+    SerialCom.getConnectedArduino();
 
     function getTemperature(e: EventData) : Promise<string> {
 
