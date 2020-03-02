@@ -21,7 +21,7 @@ class SerialCom {
                 // Check all the ports to see if the arduino is connected
                 comPorts.forEach((port) => {
                     if (port.manufacturer.includes('arduino')) {
-                        SerialCom.arduinoPort = port.comName;
+                        SerialCom.arduinoPort = port.path;
                         SerialCom.openPort(SerialCom.arduinoPort);
                     }
                 });
@@ -75,8 +75,8 @@ class SerialCom {
         });
     }
     static writeToArduino(longitude, latitude) {
-        let coords = [longitude, latitude];
-        console.log(coords);
+        let coords = [longitude.toFixed(20), latitude.toFixed(20)];
+        console.log('Sending (%s) to device...', coords.join(', '));
         if (!this.connected) {
             dialog.showErrorBox('No Arduino Connected', 'Please ensure that your Arduino is properly connected before trying to export coordinates.');
         }
@@ -85,10 +85,9 @@ class SerialCom {
                 // The coordinates we're gonna send to the flight computer
                 SerialCom.arduinoSerialPort.write(coords.join(' '), (err) => {
                     if (err) {
-                        console.log("Err: ", err.message);
+                        console.log('Error communicating with device:', err.message);
                     }
-                    console.log("The coordinates: " + coords);
-                    console.log("message sent");
+                    console.log('Sent!');
                 });
                 // This is the delimiter, this tells the program to split the message here
                 // This is how the network knows the entire message has been completely sent
@@ -102,4 +101,4 @@ class SerialCom {
     }
 }
 exports.SerialCom = SerialCom;
-SerialCom.coords = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0];
+SerialCom.coords = [-1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0];

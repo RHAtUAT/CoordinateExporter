@@ -332,6 +332,8 @@ body {
       display: inline-block;
       font-size: 14px;
       font-family: 'agane';
+      border-radius: 2px;
+
     }
 
     button.delete:hover {
@@ -348,6 +350,7 @@ body {
       display: inline-block;
       font-size: 14px;
       font-family: 'agane';
+      border-radius: 2px;
     }
 
     button.export:hover { 

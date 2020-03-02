@@ -6,14 +6,14 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -112.03699145019458,
-                    33.3803769170392
+                    -112.13655504882789,
+                    33.48982234448643
                 ]
             },
             "properties": {
-                "id": "PointID-1574796096142",
-                "color": "#6c1a2e",
-                "temp": "57"
+                "id": "PointID-1575434701869",
+                "color": "#0930b4",
+                "temp": "59"
             }
         },
         {
@@ -21,14 +21,44 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -112.11114916503828,
-                    33.38152365739096
+                    -112.26152453124986,
+                    33.43024613989556
                 ]
             },
             "properties": {
-                "id": "PointID-1574796148501",
-                "color": "#bc5ef6",
-                "temp": "57"
+                "id": "PointID-1575434716311",
+                "color": "#6dc70d",
+                "temp": "59"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.36799843591282,
+                    33.35987685567949
+                ]
+            },
+            "properties": {
+                "id": "PointID-1575670941098",
+                "color": "#31a49c",
+                "temp": "70"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.2434636527669,
+                    33.33037490222756
+                ]
+            },
+            "properties": {
+                "id": "PointID-1575670942595",
+                "color": "#bf96f7",
+                "temp": "70"
             }
         }
     ]

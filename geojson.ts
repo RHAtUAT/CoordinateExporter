@@ -35,7 +35,7 @@ export class Points {
                 MapService.updateLayerArrays();
                 MapService.getPointSources();
                 // Add a list element for each point on the map
-                MapService.newListElement(element.properties.id, element.geometry.coordinates[0], element.geometry.coordinates[1]);
+                MapService.newListElement(element.properties.id, (element.geometry as any).coordinates[0], (element.geometry as any).coordinates[1]);
     
                 //Replace the default color picker window with the custom one
                 MapService.buildColorPicker(element, element.properties.color, Points.geojson);

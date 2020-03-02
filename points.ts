@@ -117,18 +117,18 @@ map.on('load',function () {
                 return code;
             };
             point = {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: [
                         e.lngLat.lng,
                         e.lngLat.lat
                     ]
                 },
-                "properties": {
-                    "id": 'PointID-' + new Date().getTime(),
-                    "color": "#" + randomColor() + randomColor() + randomColor(),
-                    "temp": await getTemperature(e)
+                properties: {
+                    id: 'PointID-' + new Date().getTime(),
+                    color: "#" + randomColor() + randomColor() + randomColor(),
+                    temp: await getTemperature(e)
                 }
             };
             Points.geojson.features.push(point);
@@ -154,7 +154,7 @@ map.on('load',function () {
             MapService.updateLayerArrays();
 
             // Create new list element using loaded points
-            MapService.newListElement(point.properties.id, point.geometry.coordinates[0], point.geometry.coordinates[1]);
+            MapService.newListElement(point.properties.id, (point.geometry as any).coordinates[0], (point.geometry as any).coordinates[1]);
 
             // Style the input field with the custom color picker after the element has been created
             MapService.buildColorPicker(point, point.properties.color, Points.geojson);

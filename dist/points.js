@@ -110,18 +110,18 @@ map.on('load', function () {
                     return code;
                 };
                 point = {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [
+                    type: "Feature",
+                    geometry: {
+                        type: "Point",
+                        coordinates: [
                             e.lngLat.lng,
                             e.lngLat.lat
                         ]
                     },
-                    "properties": {
-                        "id": 'PointID-' + new Date().getTime(),
-                        "color": "#" + randomColor() + randomColor() + randomColor(),
-                        "temp": yield getTemperature(e)
+                    properties: {
+                        id: 'PointID-' + new Date().getTime(),
+                        color: "#" + randomColor() + randomColor() + randomColor(),
+                        temp: yield getTemperature(e)
                     }
                 };
                 geojson_1.Points.geojson.features.push(point);
