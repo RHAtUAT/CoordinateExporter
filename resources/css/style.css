@@ -1,0 +1,511 @@
+@font-face {
+    font-family: 'Agane';
+    font-weight: 400;
+    src: local('Agane'), local('Agane 55 (roman)'), url('../fonts/Agane 55 (roman).ttf');
+}
+
+@font-face {
+    font-family: 'Agane';
+    font-weight: 600;
+    src: local('Agane'), local('Agane 55 (Bold)'), url('../fonts/Agane 55 (Bold).ttf');
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    src: local('Material Icons'), local(MaterialIcons-Regular), url('../fonts/MaterialIcons-Regular.ttf');
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* These are variables. Begin variable name with --
+call with var(--variableName)
+*/
+:root {
+    --side-nav-menu-bg-color: #111111;
+    --text-color: #818181;
+    --list-bg-color: #1e1e1e;
+    --border-color: #3a3a3a;
+}
+
+/*
+color theme used:
+https://coolors.co/b7b7b7-d1d1d1-f4f4f4-515151-303030
+*/
+
+.noselect {
+    user-select: none;
+}
+
+.material-icons {
+    position: absolute;
+    right: 0px;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+/* For making a custom scroll bar for the points*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgb(82, 81, 81);
+    border-radius: 20px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #333232;
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #272727;
+}
+/*-------------------------------------------------*/
+
+body {
+    font-family: Agane;
+    margin: 0;
+    padding: 0;
+    background-color: #222;
+}
+
+/*.connection-check {
+    src:
+    url(/images/FireGuy.gif)
+
+}*/
+
+.no-js #loader {
+    display: none;
+}
+.js #loader {
+    display: block;
+    position: absolute;
+    left: 100px;
+    top: 0;
+}
+
+.connection-check {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background-color: rgb(53, 51, 51);
+    text-align: center;
+    font-size: 30px;
+    color: #ffffff99;
+}
+
+.connection-animation-holder {
+    width: 50%;
+    height: auto;
+    border: solid white 0px;
+}
+
+.connection-animation {
+    position: inherit;
+    width: 70%;
+    height: 70%;
+}
+
+.connection-text {
+    position: inherit;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.coordinates {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 30%;
+    padding: 20px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    display: none;
+    transition: 0.5s;
+}
+
+#map-types {
+    position: relative;
+    padding: 1px;
+    margin: 5px 0 20px 10px;
+    font-size: 14px; /*14px/16 = .875em is it recommended to use em instead of px for font*/
+    font-family: 'Agane';
+}
+
+#theme-types {
+    position: relative;
+    padding: 1px;
+    margin: 5px 0 20px 10px;
+    font-size: 14px; /*14px/16 = .875em is it recommended to use em instead of px for font*/
+    font-family: 'Agane';
+}
+
+.side-menu-hr {
+    width: 85%;
+    margin: 0 0 0 15px;
+    opacity: 0.3;
+}
+
+.info-label {
+    position: absolute;
+    z-index: 1;
+    width: 0%;
+    height: 13px;
+    border: none;
+    background: #0063b1;
+    font-family: 'Agane';
+    font-size: 11px;
+    overflow-x: hidden;
+    color: white;
+    transition: 0.5s;
+    bottom: 0px;
+}
+
+#arduino-info {
+    margin-left: 5px;
+}
+
+#options-tab #options-title {
+    display: inline-block;
+    font-size: 15px;
+    margin: 20px 0 0px 15px;
+    text-decoration: underline;
+}
+
+#themes-title {
+    display: inline-block;
+    font-size: 15px;
+    margin: 20px 0 0px 15px;
+    text-decoration: underline;
+}
+
+#initialText {
+    display: inline-block;
+    margin: 15px;
+}
+
+.side-nav-menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #303030;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0px;
+}
+
+.nav-dropdown {
+    overflow: hidden;
+    display: none;
+    border: 1px solid var(--border-color);
+    color: black;
+    font-size: 20px;
+    font-family: 'Agane';
+    color: #ffffff;
+    background-color: #515151;
+    transition: 0.3s;
+}
+
+.side-nav-menu .nav-item {
+    text-align: left;
+    padding: 8px 0px 8px 10px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    text-decoration: none;
+    font-size: 25px;
+    font-family: 'Agane';
+    color: #818181;
+    background-color: #303030;
+    transition: 0.3s;
+}
+
+.side-nav-menu .nav-item:hover {
+    color: #f1f1f1;
+    cursor: pointer;
+    background-color: #000;
+}
+
+/*
+.side-nav-menu .nav-item:hover::after {
+    position: absolute;
+    right: 2px;
+    font-family: 'material-icon';
+    content: 'arrow_drop_down';
+    color: #f1f1f1;
+    cursor: pointer;
+    background-color: #211F1F;
+}
+*/
+.side-nav-menu .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#side-nav-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--list-bg-color);
+    color: var(--text-color);
+    transition: 0.5s;
+    padding-top: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#side-nav-btn span {
+    font-size: 30px;
+    font-family: 'Agane', sans-serif;
+    cursor: pointer;
+}
+
+@media screen and (max-height: 450px) {
+    .side-nav-menu {
+        padding-top: 15px;
+    }
+    .side-nav-menu a {
+        font-size: 18px;
+    }
+}
+
+.map-overlay .map-overlay-inner {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.map-overlay label {
+    display: block;
+    margin: 0 0 10px;
+}
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    cursor: ew-resize;
+}
+
+ul.point-list {
+    display: inline;
+    list-style-type: none;
+    margin: 0;
+    padding: 0px;
+}
+.point-list li {
+    padding: 4px 0px 4px 5px;
+    width: 100%;
+    border: #2196f3;
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: 'Agane';
+    color: #ffffff;
+    background-color: #515151;
+    transition: 0.3s;
+}
+
+button.delete {
+    background-color: #ff5252; /* Red */
+    border: none;
+    color: #1e1e1e;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-family: 'Agane';
+    border-radius: 2px;
+}
+
+button.delete:hover {
+    cursor: pointer;
+}
+
+button.export {
+    background-color: #4caf50; /* Green */
+    border: none;
+    color: #1e1e1e;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-family: 'Agane';
+    border-radius: 2px;
+}
+
+button.export:hover {
+    cursor: pointer;
+}
+
+.fly {
+    position: absolute;
+    background-color: #818181;
+    border: none;
+    right: 4px;
+    height: 20px;
+    width: 20px;
+    text-decoration: none;
+    display: inline-block;
+    outline: none;
+}
+.fly:hover {
+    cursor: pointer;
+}
+
+.flyImage {
+    height: 95%;
+    width: 95%;
+}
+
+.fly:hover {
+    cursor: pointer;
+}
+
+.tooltip {
+    display: inline-block;
+    position: relative;
+}
+
+.tooltip .tooltiptext {
+    top: -2px;
+    right: 105%;
+    visibility: hidden;
+    width: 120px;
+    background-color: rgb(15, 15, 15);
+    color: #fff;
+    text-align: center;
+    font-family: 'Agane';
+    font-size: 14px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+input.dot {
+    height: 25px;
+    width: 25px;
+    background-color: #ff5252;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/*----------------------Toggle Slider--------------------------*/
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin: 20px 15px 20px 15px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 13px;
+    width: 13px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #000000;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #000000;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.slider:before {
+    border-radius: 50%;
+}
+
+/*---------------------------------------------------------*/

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Map</title>
+
+        <script src="../scripts/jquery-3.4.1.min.js"></script>
+        <script src="../scripts/mapbox-gl-1.3.1.js"></script>
+
+        <link rel="stylesheet" href="../css/colorpicker/nano.min.css" />
+        <link rel="stylesheet" href="../css/style.css" />
+    </head>
+    <body>
+        <div class="connection-check">
+            <div class="connection-animation-holder">
+                <img class="connection-animation" src="../images/Blue_Fire_Dude_V3.gif">
+                <p class="connection-text">Checking connection...</p>
+            </div>
+        </div>
+
+        <div id="distance"></div>
+
+        <!--Where the map will be displayed-->
+        <div id="map"></div>
+        <!--<pre id="info"></pre>-->
+        <pre id="coordinates" class="coordinates"></pre>
+
+        <!--The sideTab-->
+        <div id="sideNav" class="side-nav-menu">
+            <!--Radio buttons for changing map style-->
+
+            <!--The tab buttons in the nav menu-->
+            <button id="options-btn" class="nav-item">Options</button>
+            <!--The menu to pop up when you click options-->
+            <div id="options-tab" class="nav-dropdown">
+                <!--Option 1-->
+                <span id="options-title">Map Types</span>
+                <span>
+                    <div id="map-types">
+                        <input id="streets-v11" type="radio" name="rtoggle" value="streets" checked="checked">
+                        <label for="streets-v11">Streets</label>
+                        <input id="light-v10" type="radio" name="rtoggle" value="light">
+                        <label for="light-v10">Light</label>
+                        <input id="dark-v10" type="radio" name="rtoggle" value="dark">
+                        <label for="dark-v10">Dark</label>
+                        <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors">
+                        <label for="outdoors-v11">Outdoors</label>
+                        <input id="satellite-v9" type="radio" name="rtoggle" value="satellite">
+                        <label for="satellite-v9">Satellite</label>
+                    </div>
+                </span>
+                <hr class="side-menu-hr">
+                <span id="themes-title">Themes</span>
+                <span>
+                    <div id="theme-types">
+                        <input id="dark-button" type="radio" name="rtoggle" value="dark" checked="checked">
+                        <label for="dark-button">Dark</label>
+                        <input id="light-button" type="radio" name="rtoggle" value="light">
+                        <label for="light-button">Light</label>
+                    </div>
+                </span>
+                <!--Option 2-->
+                <hr class="side-menu-hr">
+                <span>
+                    <label class="switch">
+                        <input id="coordinate-switch" type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </span>
+                <span class="noselect">Show coordinates on map</span>
+                <!--Option 3-->
+                <div>
+                    <span>
+
+                    </span>
+                </div>
+            </div>
+
+            <button id="points" class="nav-item">Points</button>
+            <!--The menu to pop up when you click points-->
+            <div id="points-tab" class="nav-dropdown">
+                <ul id="point-list" class="point-list">
+                    <label id="initialText">Click on the map to add a point</label>
+                </ul>
+            </div>
+
+        </div>
+
+        <div>
+            <span id="info-label" class="info-label">
+                <label id="arduino-info">Awaiting Arduino...</label>
+            </span>
+        </div>
+        <!--The button to open the sideNav-->
+        <div id="side-nav-btn">
+            <span>&#9776;</span>
+        </div>
+
+        <template id="sidebarPointItem">
+            <li>
+                <input class="color-picker">
+                <label class="list-item"></label>
+                <span class="fly">
+                    <span class="tooltip">
+                        <img class="flyImage" src="../images/send.svg">
+                        <span class="tooltiptext">Fly to point</span>
+                    </span>
+                </span>
+                <br>
+                <button class="export">Export</button>
+                <button class="delete">Delete</button>
+            </li>
+        </template>
+
+        <script>
+            window.exports = {};
+            require('../../dist/renderer/index').App.start().catch(console.error);
+        </script>
+    </body>
+</html>

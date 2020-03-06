@@ -2,7 +2,7 @@
   "name": "spaceapplication",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/main.js",
+  "main": "./dist/electron/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
@@ -11,8 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@serialport/parser-readline": "^2.0.2",
-    "@simonwep/pickr": "^1.4.2",
-    "@types/jquery": "^3.3.31",
+    "@simonwep/pickr": "^1.5.1",
     "@types/mapbox-gl": "^0.54.3",
     "@types/serialport": "^7.0.4",
     "electron-packager": "^14.1.1",
@@ -23,6 +22,7 @@
     "typescript": "^3.7.2"
   },
   "devDependencies": {
+    "@types/jquery": "^3.3.33",
     "electron": "^7.1.2",
     "electron-rebuild": "^1.8.8",
     "webpack": "^4.40.2",
